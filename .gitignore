@@ -1,0 +1,6 @@
+*.Rproj*/
+*_cache/
+*_files/
+.RData
+.Rhistory
+.DS_Store

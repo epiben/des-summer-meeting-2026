@@ -1,0 +1,24 @@
+/* see: https://quarto.org/docs/presentations/revealjs/themes.html#sass-variables */
+
+/*$body-bg: #191919;
+$body-color: #fff;
+$link-color: #42affa; */
+
+/*-- scss:defaults --*/
+
+$presentation-heading-font-weight: 300;
+$presentation-font-size-root: 32px;
+$presentation-slide-text-align: left;
+$presentation-line-height: 1.2;
+
+/*-- scss:rules --*/
+
+.reveal .slide blockquote {
+  border-left: 3px solid $text-muted;
+  padding-left: 0.5em;
+}
+
+
+.reveal h1, .reveal h2 {
+  padding-bottom: 1rem !important;
+}
