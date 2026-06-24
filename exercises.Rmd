@@ -151,7 +151,7 @@ knitr::opts_chunk$set(include = FALSE, eval = FALSE)
 Some claim that women are under-diagnosed, and that more men are more
 likely to have CTs than women. We will try to analyse this claim using
 the `rstanarm` package, using imaginary data for the CTs on a specific
-day. Let's load the relevant package and create a dataset that can be
+day. Let's load the relevant packages and create a dataset that can be
 used for logistic regression.
 
 ```{r include=TRUE, message=FALSE, class.source = 'fold-show'}
@@ -192,7 +192,7 @@ as_tibble(fit)
 mcmc_areas(posteriors)
 ```
 
-3.  Compute the MAP and median posterior on the probability scale.
+3.  Compute the maximum a posteriori (MAP = the mode of the posterior distribution) and median posterior on the probability scale.
 
     -   Hint: recall that $g(x) = \frac{\exp(x)}{1 + \exp(x)}$ is the
         inverse function to the logistic transform
@@ -249,7 +249,7 @@ mcmc_areas(posteriors)
     #' Same as above but using whatever prior you used
     ```
 
-7.  Prior predictive checks are like posterior predictive checks, only that they ignore the data and generates data based solely on the priors. This can often be useful to check that the priors you have specified will yield data that look reasonable for the modelling task at hand. Carry out a prior predictive check of the three models above (default prior, `normal(0.0, 0.1)` and your own). All good?
+7.  Prior predictive checks are like posterior predictive checks, only that they ignore the data and generate data based solely on the priors. This can often be useful to check that the priors you have specified will yield data that look reasonable for the modelling task at hand. Carry out a prior predictive check of the three models above (default prior, `normal(0.0, 0.1)` and your own). All good?
 
     -   Hint: see the `prior_PD` argument in `?stan_glm`.
 
@@ -420,8 +420,8 @@ head(cmi)
 
 1.  A friend of yours wants to test a new pre-stent treatment obelixaban
     against placebo, in CMI patients with septic shock. Pre-trial
-    evidence suggest that the 30-day mortality in this patient group
-    receiving standard of care is roughly 20% (95% CrI: 5%-35%). Your
+    evidence suggest that the 30-day mortality in the patient group
+    receiving placebo is roughly 20% (95% CrI: 5%-35%). Your
     friend's main results with respect to 30-day mortality are in the
     following 2x2 table (assume no loss to follow-up):
 
@@ -553,7 +553,7 @@ head(cmi)
 
 5.  Compute average treatment effect using G-computation
 
-    -   Hint: predict the posterior probabilities of death for all patients if
+    -   Hint: predict the posterior probabilities of death by day 90 for all patients if
         they had all received the miracustent and if they had all received
         placebo care. Take a look at ?posterior_epred
     -   Hint: here are two links for good introductions to G-computation:
