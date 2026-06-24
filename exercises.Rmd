@@ -14,14 +14,12 @@ editor_options:
     wrap: 72
 ---
 
-<!--
-# ------------------------------------------------------------------------
+<!------------------------------------------------------------------------
 #
 # Consider making e.g. Shiny that produces "community-prior values" for
 # both proportion and continuous variables
 #
-# ------------------------------------------------------------------------
--->
+# ----------------------------------------------------------------------->
 
 All of these exercises use the R program package. We will be needing a
 few packages (all on CRAN). You can install these with the
@@ -55,10 +53,6 @@ knitr::opts_chunk$set(include = TRUE, eval = TRUE)
 
 ## Before we start: somme intuition about sampling
 
-```{r echo=FALSE}
-knitr::opts_chunk$set(include = FALSE, eval = FALSE)
-```
-
 ## A. Devising and using priors
 
 1.  Expecting a mortality risk of 20% in patients with chronic mesenteric
@@ -70,6 +64,14 @@ knitr::opts_chunk$set(include = FALSE, eval = FALSE)
 
     ```{r}
     map_dfr(c(0.025, 0.05, 0.1), ~ find_beta_params(0.2, ., n_dec = 2))
+
+    ggplot() +
+        geom_density(aes(x = rbeta(100000, 9, 38)))
+
+    find_beta_params(0.2, 0.1, "lower", n_dec = 2)
+
+    mean(rbeta(100000, 9, 38) >= 0.1)
+
     ```
 
 2.  Devise priors with the same levels of certainty but with other
@@ -146,6 +148,12 @@ knitr::opts_chunk$set(include = FALSE, eval = FALSE)
       stat_function(fun = ~ dbeta(., 0.9, 365 - 0.9), n = 1000, xlim = c(0, 0.05))
     ```
 
+```{r}
+ggplot() +
+    geom_density(aes(x = rbeta(10000, 0.5, 0.5)))
+```
+
+
 ## B. Using rstanarm
 
 Some claim that women are under-diagnosed, and that more men are more
@@ -158,6 +166,7 @@ used for logistic regression.
 library("rstanarm")
 library("bayesplot")
 dta <- data.frame(woman = rep(0:1, times = c(22 - 8, 8)))
+dta
 ```
 
 1.  Use the `stan_glm()` function to fit a logistic model. Remember that
@@ -177,6 +186,8 @@ fit <- stan_glm(
   cores = 1,
   refresh = 0 # just to suppress sampler output (avoids cluttering)
 )
+summary(fit)
+prior_summary(fit)
 ```
 
 
@@ -623,7 +634,17 @@ model {
 ## F. Resources
 
 - Book - Richard McElreath: Statistical Rethinking [https://xcelab.net/rm/statistical-rethinking/](https://xcelab.net/rm/statistical-rethinking/). Excellent introduction to Bayesian analysis. You really should start here.
+- Article - John K. Kruschke: Bayesian Analysis Reporting Guidelines [https://www.nature.com/articles/s41562-021-01177-7](https://www.nature.com/articles/s41562-021-01177-7)
 - Article - Michael Betancourt: A Conceptual Introduction to Hamiltonian Monte Carlo [https://arxiv.org/pdf/1701.02434.pdf](https://arxiv.org/pdf/1701.02434.pdf). Excellent paper on HMC; it is a bit technical, but even if you skip the most technical parts and equations, there's lots of learning in there.
+- R packge - Paul Buerkner: Bayesian regression models using Stan [https://paulbuerkner.com/brms/](https://paulbuerkner.com/brms/). Much more flexible R interface to Stan than rstanarm, and especially far superior if you need multi-level/hierarchical models or priors with more "unorthodox" shapes.
+- Conjugate priors - Conjutate priors for a bunch of likelihood functions for when unadjusted analyses are enough [https://en.wikipedia.org/wiki/Conjugate_prior](https://en.wikipedia.org/wiki/Conjugate_prior)
 - Article - Goligher et al.: Extracorporeal membrane oxygenation for severe acute respiratory distress syndrome and posterior probability of mortality benefit in a post hoc bayesian analysis of a randomized clinical trial [https://doi.org/10.1001/jama.2018.14276](10.1001/jama.2018.14276)
 - Book - James V. Stone: Bayes' Rule: a tutorial introduction to Bayesian analysis. A bit old but with a fun-ish take on things and not too much math.
-- Book - Andrew Gelman et al.: Bayesian Dataz Analysis. The Bible but really not accessible and in no way the place to start for most people.
+- Book - Andrew Gelman et al.: Bayesian Data Analysis. The Bible but really not accessible and in no way the place to start for most people.
+
+## G. Session info
+This repo uses `renv` for reproducibility. Here's the session info:
+
+```{r}
+sessionInfo()
+```
